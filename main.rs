@@ -208,22 +208,16 @@ impl Diretorio {
 }
 
 fn main() {
-    let dono = Permissao::new(true, true, true); // Permissões do dono: rwx
-    let grupo = Permissao::new(true, true, false); // Permissões do grupo: rw-
-    let outros = Permissao::new(false, false, true); // Permissões dos outros: --x
+    // Cria permissões padrão para o dono, grupo e outros
+    // Cria um usuário que será o dono do arquivo
+    let usuario_dono = Usuario::new(String::from("Alice"), 1001);
 
-    // Mostra a combinação octal e rwx das permissões do arquivo
-    let (octal, rwx) = Permissao::octal_e_rwx_total(&dono, &grupo, &outros);
-    println!("Permissões: ({}/{})", octal, rwx);
+    // Cria um grupo associado ao arquivo
+    let grupo = Grupo::new(String::from("Admin"), 1);
 
-    let mut grupo1 = Grupo::new(String::from("Admin"), 1);
-    let usuario1 = Usuario::new(String::from("João"), 1001);
-    grupo1.adiciona_membro(usuario1);
+    // Cria um arquivo com nome, tamanho, dono e grupo, e aplica as permissões padrão
+    let arquivo = Arquivo::new(String::from("exemplo.txt"),  1024,usuario_dono,grupo);
 
-    println!("Membros do grupo {}:", grupo1.nome);
-    grupo1.listar_grupos();
-
-    grupo1.remover_membro("João");
-    println!("Membros do grupo {} após remoção:", grupo1.nome);
-    grupo1.listar_grupos();
+    // Exibe informações do arquivo usando o método stat
+    arquivo.stat();
 }
